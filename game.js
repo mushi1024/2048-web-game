@@ -162,7 +162,11 @@ document.addEventListener("touchstart", function (e) {
   if (e.touches.length !== 1) return;
   touchStartX = e.touches[0].clientX;
   touchStartY = e.touches[0].clientY;
-});
+}, { passive: false });
+
+document.addEventListener("touchmove", function (e) {
+  e.preventDefault();
+}, { passive: false });
 
 document.addEventListener("touchend", function (e) {
   if (e.changedTouches.length !== 1) return;
@@ -182,4 +186,5 @@ document.addEventListener("touchend", function (e) {
       moveUp();
     }
   }
-});
+}, { passive: false });
+
