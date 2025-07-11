@@ -1,2 +1,4 @@
-// Touch-enabled 2048 game JS with responsive support
-// (full code omitted for demo)
+// ... all game logic goes here
+window.addEventListener("DOMContentLoaded", () => {
+  startGame();
+});
