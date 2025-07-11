@@ -2,8 +2,9 @@ const gameContainer = document.getElementById("game-container");
 const scoreDisplay = document.getElementById("score");
 let score = 0;
 let board = [];
+let previousBoard = null;
+let previousScore = 0;
 
-// 建立空白棋盤
 function initBoard() {
   board = [];
   for (let row = 0; row < 4; row++) {
@@ -14,7 +15,6 @@ function initBoard() {
   }
 }
 
-// 隨機產生 2 或 4
 function spawnTile() {
   let empty = [];
   for (let r = 0; r < 4; r++) {
@@ -27,7 +27,6 @@ function spawnTile() {
   board[r][c] = Math.random() < 0.9 ? 2 : 4;
 }
 
-// 繪製棋盤
 function drawBoard() {
   gameContainer.innerHTML = "";
   for (let r = 0; r < 4; r++) {
@@ -46,7 +45,19 @@ function arraysEqual(a, b) {
   return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
-// 移動邏輯通用函式
+function saveState() {
+  previousBoard = board.map(row => row.slice());
+  previousScore = score;
+}
+
+function undoMove() {
+  if (previousBoard) {
+    board = previousBoard.map(row => row.slice());
+    score = previousScore;
+    drawBoard();
+  }
+}
+
 function operate(row) {
   row = row.filter(x => x !== 0);
   for (let i = 0; i < row.length - 1; i++) {
@@ -59,9 +70,9 @@ function operate(row) {
   return row.filter(x => x !== 0).concat(Array(4 - row.filter(x => x !== 0).length).fill(0));
 }
 
-// 各方向移動
 function moveLeft() {
   let moved = false;
+  saveState();
   for (let r = 0; r < 4; r++) {
     let newRow = operate(board[r]);
     if (!arraysEqual(board[r], newRow)) moved = true;
@@ -75,6 +86,7 @@ function moveLeft() {
 
 function moveRight() {
   let moved = false;
+  saveState();
   for (let r = 0; r < 4; r++) {
     let reversed = board[r].slice().reverse();
     let newRow = operate(reversed).reverse();
@@ -89,6 +101,7 @@ function moveRight() {
 
 function moveUp() {
   let moved = false;
+  saveState();
   for (let c = 0; c < 4; c++) {
     let col = [];
     for (let r = 0; r < 4; r++) col.push(board[r][c]);
@@ -106,6 +119,7 @@ function moveUp() {
 
 function moveDown() {
   let moved = false;
+  saveState();
   for (let c = 0; c < 4; c++) {
     let col = [];
     for (let r = 0; r < 4; r++) col.push(board[r][c]);
@@ -121,7 +135,6 @@ function moveDown() {
   }
 }
 
-// 鍵盤控制
 document.addEventListener("keydown", e => {
   switch (e.key) {
     case "ArrowLeft": moveLeft(); break;
@@ -131,7 +144,6 @@ document.addEventListener("keydown", e => {
   }
 });
 
-// 開始遊戲
 function startGame() {
   score = 0;
   initBoard();
