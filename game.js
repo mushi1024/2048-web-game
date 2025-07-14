@@ -46,7 +46,7 @@ function move(dir) {
   prevBoard = cloneBoard(board);
   let changed = false;
 
-  // Correct rotation logic: rotate to left, then back
+  // rotate to left direction
   for (let i = 0; i < dir; i++) rotate();
 
   for (let row of board) {
@@ -63,6 +63,7 @@ function move(dir) {
     row.splice(0, SIZE, ...arr);
   }
 
+  // rotate back
   for (let i = 0; i < (4 - dir) % 4; i++) rotate();
 
   if (JSON.stringify(board) !== JSON.stringify(prevBoard)) {
@@ -93,12 +94,15 @@ function resetGame() {
 
 initBoard();
 
+// 修正鍵盤方向對應的 move(dir) 參數
+// 0: left, 1: up, 2: right, 3: down
+
 document.addEventListener("keydown", e => {
   switch (e.key) {
-    case "ArrowUp": move(3); break;    // rotate 3 times before processing (simulate up)
-    case "ArrowRight": move(2); break; // rotate 2 times before processing (simulate right)
-    case "ArrowDown": move(1); break;  // rotate 1 time before processing (simulate down)
-    case "ArrowLeft": move(0); break;  // no rotation needed (simulate left)
+    case "ArrowLeft": move(0); break;
+    case "ArrowUp": move(1); break;
+    case "ArrowRight": move(2); break;
+    case "ArrowDown": move(3); break;
   }
 });
 
@@ -116,6 +120,6 @@ gameContainer.addEventListener("touchend", e => {
   const absX = Math.abs(dx), absY = Math.abs(dy);
   if (Math.max(absX, absY) > 20) {
     if (absX > absY) move(dx > 0 ? 2 : 0); // right: 2, left: 0
-    else move(dy > 0 ? 1 : 3);             // down: 1, up: 3
+    else move(dy > 0 ? 3 : 1);             // down: 3, up: 1
   }
 });
