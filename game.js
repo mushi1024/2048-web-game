@@ -94,15 +94,15 @@ function resetGame() {
 
 initBoard();
 
-// 鍵盤方向對應的 move(dir) 參數
+// 鍵盤方向對應的 move(dir) 參數（上下顛倒）
 // 0: left, 1: up, 2: right, 3: down
 
 document.addEventListener("keydown", e => {
   switch (e.key) {
     case "ArrowLeft": move(0); break;
-    case "ArrowUp": move(1); break;
+    case "ArrowUp": move(3); break;    // 顛倒：原本應為 1
     case "ArrowRight": move(2); break;
-    case "ArrowDown": move(3); break;
+    case "ArrowDown": move(1); break;  // 顛倒：原本應為 3
   }
 });
 
@@ -120,6 +120,6 @@ gameContainer.addEventListener("touchend", e => {
   const absX = Math.abs(dx), absY = Math.abs(dy);
   if (Math.max(absX, absY) > 20) {
     if (absX > absY) move(dx > 0 ? 2 : 0); // right: 2, left: 0
-    else move(dy > 0 ? 3 : 1);             // swipe down -> move down (3), swipe up -> move up (1)
+    else move(dy > 0 ? 1 : 3);             // 顛倒：swipe down -> move up (1), swipe up -> move down (3)
   }
 });
