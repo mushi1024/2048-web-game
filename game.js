@@ -120,6 +120,6 @@ gameContainer.addEventListener("touchend", e => {
   const absX = Math.abs(dx), absY = Math.abs(dy);
   if (Math.max(absX, absY) > 20) {
     if (absX > absY) move(dx > 0 ? 2 : 0); // right: 2, left: 0
-    else move(dy > 0 ? 3 : 1);             // down: 3, up: 1
+    else move(dy > 0 ? 1 : 3);             // swipe down -> move up (1), swipe up -> move down (3)
   }
 });
