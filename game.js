@@ -46,7 +46,7 @@ function move(dir) {
   prevBoard = cloneBoard(board);
   let changed = false;
 
-  for (let i = 0; i < dir; i++) rotate();
+  for (let i = 0; i < (4 - dir) % 4; i++) rotate();
 
   for (let row of board) {
     let arr = row.filter(x => x);
@@ -62,7 +62,7 @@ function move(dir) {
     row.splice(0, SIZE, ...arr);
   }
 
-  for (let i = 0; i < (4 - dir) % 4; i++) rotate();
+  for (let i = 0; i < dir; i++) rotate();
 
   if (JSON.stringify(board) !== JSON.stringify(prevBoard)) {
     changed = true;
