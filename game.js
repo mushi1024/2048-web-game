@@ -94,7 +94,7 @@ function resetGame() {
 
 initBoard();
 
-// 修正鍵盤方向對應的 move(dir) 參數
+// 鍵盤方向對應的 move(dir) 參數
 // 0: left, 1: up, 2: right, 3: down
 
 document.addEventListener("keydown", e => {
